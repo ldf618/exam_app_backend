@@ -13,6 +13,7 @@ public class Inicio {
     
     public static void main (String[] args){
         Prueba prueba = new Prueba ();
+        
         prueba.setup();
         prueba.saveMessage();
         prueba.readMessage();
