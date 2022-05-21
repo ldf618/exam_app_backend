@@ -15,6 +15,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -31,12 +32,12 @@ import org.hibernate.annotations.FetchMode;
 @Table(name = "exams")
 
 @NamedQueries({
-        @NamedQuery(name = "exam.findByQuestionTypeAndCourse", 
-                query = "select distinct e from Exam e inner join e.examQuestions eq "
-                        + "where e.publicationDate is not null "
-                        + "and e.course.id=:idCourse and eq.type in (:questionType1,:questionType2)")
+    @NamedQuery(name = "exam.findByQuestionTypeAndCourse",
+            query = "select distinct e from Exam e inner join e.examQuestions eq "
+            + "where e.publicationDate is not null "
+            + "and e.course.id=:idCourse and eq.type in (:questionType1,:questionType2)")
 })
-        
+
 @SuperBuilder
 @Getter
 @Setter
@@ -45,14 +46,14 @@ import org.hibernate.annotations.FetchMode;
 @ToString(callSuper = true)
 public class Exam extends IdentityIntId {
 
-    public enum ExamType{
-        INDIVIDUAL,GROUP
+    public enum ExamType {
+        INDIVIDUAL, GROUP
     }
-/*
+    /*
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-*/
+     */
 
     @Column
     @NotNull
@@ -79,23 +80,28 @@ public class Exam extends IdentityIntId {
 
     @Column //(columnDefinition = "DATE")
     private LocalDate deadline;
-    
+
     @NotNull
-    @ManyToOne (fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Course course;
-    
+
     @NotNull
-    @ManyToOne (fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Consultant consultant;
 
     @OrderBy("position")
-    @OneToMany (mappedBy = "exam", fetch = FetchType.EAGER , cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "exam", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, orphanRemoval = true)
     //@ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @Fetch (FetchMode.SELECT) //Hibernate propietary but avoids duplication.Default FetchMode.JOIN duplicate rows 
+    @Fetch(FetchMode.SELECT) //Hibernate propietary but avoids duplication.Default FetchMode.JOIN duplicate rows 
     private List<ExamQuestion> examQuestions;
+
+    @PrePersist
+    void createdAt() {
+        this.creationDate =  LocalDate.now();
+    }
 }
