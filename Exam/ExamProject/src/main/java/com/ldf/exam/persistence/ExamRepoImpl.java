@@ -5,8 +5,11 @@
  */
 package com.ldf.exam.persistence;
 
+import com.ldf.exam.model.Course_;
 import com.ldf.exam.model.Exam;
 import com.ldf.exam.model.ExamQuestion;
+import com.ldf.exam.model.ExamQuestion_;
+import com.ldf.exam.model.Exam_;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;

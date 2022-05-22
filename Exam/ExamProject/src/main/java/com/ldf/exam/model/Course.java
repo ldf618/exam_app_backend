@@ -1,5 +1,6 @@
 package com.ldf.exam.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -35,6 +36,7 @@ public class Course extends IdentityIntId{/*implements Serializable {
 	private double credits;
         
         @ManyToOne(cascade ={CascadeType.PERSIST})
+        @JsonBackReference
         private Degree degree;
 
 }

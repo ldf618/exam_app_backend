@@ -1,5 +1,6 @@
 package com.ldf.exam.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -40,6 +41,7 @@ public class Degree extends IdentityIntId /*implements Serializable*/{
         //cascade = CascadeType.PERSIST, orphanRemoval = true si eliminamos de la lista se elimina de la BD
         @ToString.Exclude
         @EqualsAndHashCode.Exclude
+        @JsonManagedReference
         @OneToMany (mappedBy = "degree", fetch = FetchType.LAZY , cascade = CascadeType.PERSIST, orphanRemoval = true)
         private List<Course> courses;
 	

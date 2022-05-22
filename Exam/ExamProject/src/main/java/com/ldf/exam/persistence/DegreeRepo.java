@@ -12,6 +12,5 @@ import org.springframework.data.repository.CrudRepository;
  *
  * @author Lo
  */
-public interface DegreeRepo
-    extends CrudRepository<Degree, Integer> {
+public interface DegreeRepo extends CrudRepository<Degree, Integer> {
 }
