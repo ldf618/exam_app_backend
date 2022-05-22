@@ -18,7 +18,7 @@ import org.springframework.data.repository.query.Param;
  *
  * @author Lo
  */
-public interface ExamRepo extends JpaRepository<Exam, Integer> {
+public interface ExamRepo extends JpaRepository<Exam, Integer>, ExamRepoCustom  {
     
     public List<Exam> findByCourse(int idCourse);
     public List<Exam> findByPublicationDateIsNotNullAndPublicationDateBetween(LocalDate startDate, LocalDate endDate);

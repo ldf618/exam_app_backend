@@ -40,15 +40,6 @@ public abstract class DAO<T> {
         return result;
     }
 
-    public int count() {
-        javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        javax.persistence.criteria.Root<T> rt = cq.from(modelClass);
-        cq.select(em.getCriteriaBuilder().count(rt));
-        javax.persistence.Query q = em.createQuery(cq);
-        int result = ((Long) q.getSingleResult()).intValue();
-        return result;
-    }
-
     protected List<T> execJPQLMultiple(String namedQuery, Map parameters) {
         
         TypedQuery<T> tq = em.createNamedQuery(namedQuery, modelClass);        
