@@ -49,7 +49,7 @@ public class ExamController {
     
     @PostMapping(path ="exam", consumes="application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public Exam postTaco(@RequestBody Exam exam) {
+    public Exam saveExam(@RequestBody Exam exam) {
      return examRepo.save(exam);
     }
 }

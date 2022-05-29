@@ -6,9 +6,10 @@
 package com.ldf.exam.controller;
 
 import com.ldf.exam.model.Degree;
-import com.ldf.exam.model.Exam;
 import com.ldf.exam.persistence.DegreeRepo;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ import org.springframework.web.server.ResponseStatusException;
  *
  */
 @RestController
-@RequestMapping(path = "/api", produces = "application/json")
+@RequestMapping(path = "/api/degree", produces = "application/json")
 @CrossOrigin(origins = "*")
 public class DegreeController {
 
@@ -41,17 +42,31 @@ public class DegreeController {
         return degreeRepo.findAll();
     }
 
-    @GetMapping("/degrees/{id}")
-    public ResponseEntity<Degree> examById(@PathVariable("id") Integer id) {
+    @GetMapping("/degree/{id}")
+    public ResponseEntity<Degree> degreeById(@PathVariable("id") Integer id) {
         Optional<Degree> optDegree = degreeRepo.findById(id);
         if (optDegree.isPresent()) 
             return new ResponseEntity<>(optDegree.get(), HttpStatus.OK);        
        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
     
+    @GetMapping("/countbyname/{name}")
+    public Integer countByName(@PathVariable("name") String name) {
+        return degreeRepo.countByNameIgnoreCase(name);
+    }
+    
+    @GetMapping("/existsbyname/{name}")
+    public Boolean existsDegreeByName(@PathVariable("name") String name) {
+        return degreeRepo.existsDegreeByNameIgnoreCase(name);
+    }
+    
+    
     @PostMapping(path ="degree", consumes="application/json")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Degree postTaco(@RequestBody Degree degree) {
-     return degreeRepo.save(degree);
+    //@ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<?> postDegree(@RequestBody Degree degree) {
+     //try {Thread.sleep(7000);} catch (InterruptedException ex) {}
+     if (degree.getId()!=0) 
+         return new ResponseEntity<>("degree.id isnt allowed. Ids are db driven",HttpStatus.BAD_REQUEST);
+     return new ResponseEntity<>(degreeRepo.save(degree),HttpStatus.CREATED);
     }
 }

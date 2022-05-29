@@ -13,4 +13,6 @@ import org.springframework.data.repository.CrudRepository;
  * @author Lo
  */
 public interface DegreeRepo extends CrudRepository<Degree, Integer> {
+     public Integer countByNameIgnoreCase(String name);
+     public Boolean existsDegreeByNameIgnoreCase(String name);
 }
