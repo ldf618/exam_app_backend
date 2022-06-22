@@ -7,9 +7,9 @@ package com.ldf.exam.controller;
 
 import com.ldf.exam.model.Degree;
 import com.ldf.exam.persistence.DegreeRepo;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 /**
  *
@@ -35,7 +33,7 @@ public class DegreeController {
 
     @Autowired
     private DegreeRepo degreeRepo;
-
+    
     @RequestMapping("/degrees")
     public Iterable<Degree> getTest() {
         //throw new ResponseStatusException(HttpStatus.FORBIDDEN, "forbidden");
@@ -69,4 +67,29 @@ public class DegreeController {
          return new ResponseEntity<>("degree.id isnt allowed. Ids are db driven",HttpStatus.BAD_REQUEST);
      return new ResponseEntity<>(degreeRepo.save(degree),HttpStatus.CREATED);
     }
+    
+    @GetMapping("/degreesByStudentId/{id}")
+    public ResponseEntity<List<Degree>> degreesByStudentId(@PathVariable("id") Integer id) {
+        List<Degree> degreeList = degreeRepo.findDegreesByStudentId(id);
+        return new ResponseEntity<>(degreeList, HttpStatus.OK);        
+    }
+    
+    @GetMapping("/degreesByConsultantId/{id}")
+    public ResponseEntity<List<Degree>> degreesByConsultantId(@PathVariable("id") Integer id) {
+        List<Degree> degreeList = degreeRepo.findDegreesByStudentId(id);
+        return new ResponseEntity<>(degreeList, HttpStatus.OK);        
+    }
+    
+    @GetMapping("/degreesByUserId/{id}/{userType}")
+    public ResponseEntity<List<Degree>> degreesByUsertId(@PathVariable("id") Integer id, @PathVariable("userType") String userType) {
+        List<Degree> degreeList;
+        if (userType.equalsIgnoreCase("student"))
+            degreeList = degreeRepo.findDegreesByStudentId(id);
+        else if (userType.equalsIgnoreCase("consultant"))
+            degreeList = degreeRepo.findDegreesByConsultantId(id);
+        else 
+            degreeList = new ArrayList();
+        return new ResponseEntity<>(degreeList, HttpStatus.OK);        
+    }
+    
 }

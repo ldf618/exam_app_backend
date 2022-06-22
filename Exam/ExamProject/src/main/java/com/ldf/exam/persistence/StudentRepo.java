@@ -6,6 +6,7 @@
 package com.ldf.exam.persistence;
 
 import com.ldf.exam.model.Student;
+import java.util.Optional;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -14,4 +15,6 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface StudentRepo
     extends CrudRepository<Student, Integer> {
+    
+    Student findByUsername(String username);
 }

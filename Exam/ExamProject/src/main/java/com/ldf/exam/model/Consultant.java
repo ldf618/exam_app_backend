@@ -1,5 +1,9 @@
 package com.ldf.exam.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.*;
 import lombok.Builder;
@@ -9,6 +13,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 //javax.persistence
 @Entity
@@ -30,9 +36,20 @@ public class Consultant extends User {
         super(idUser, firstName, surname1, surname2, dni, userName, userPassword);
     }
 */
+    
+    @JsonInclude()
+    @Transient
+    private final String type="Consultant";
+    
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Arrays.asList(new SimpleGrantedAuthority("ROLE_Consultant"));
+    }
+    
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany (mappedBy = "consultant")
+    @JsonIgnore
     private List<Classroom> classrooms;
     
     @EqualsAndHashCode.Exclude

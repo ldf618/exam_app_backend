@@ -45,14 +45,15 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @NoArgsConstructor
+//@RequiredArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class Group extends IdentityIntId {/*implements Serializable{
-	
+    
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;*/
-        
+
         @Column
         @NotNull
         @Size(min = 2, max = 50)
@@ -68,4 +69,5 @@ public class Group extends IdentityIntId {/*implements Serializable{
         @EqualsAndHashCode.Exclude
         @ManyToOne(cascade = CascadeType.ALL)
 	private Classroom classroom;
+       
 }

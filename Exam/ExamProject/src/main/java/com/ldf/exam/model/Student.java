@@ -1,14 +1,20 @@
 package com.ldf.exam.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.*;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 //javax.persistence
 @Entity
@@ -23,6 +29,16 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class Student extends User {
     
+    @JsonInclude()
+    @Transient
+    private final String type="Student";
+    
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //jwt. prevent the password text to be included in json rsponse
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Arrays.asList(new SimpleGrantedAuthority("ROLE_Student"));
+    }
+    
     /*
     @JoinTable(
         name = "rel_student_group",
@@ -31,7 +47,8 @@ public class Student extends User {
     )*/
     @ManyToMany(mappedBy="students",cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
-    @ToString.Exclude    
+    @ToString.Exclude  
+    @JsonIgnore
     private List<Group> groups;
     
     /*
@@ -43,11 +60,13 @@ public class Student extends User {
     @ManyToMany(mappedBy="students",cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @JsonIgnore
     private List<Classroom> classrooms;
     
     @OneToMany(mappedBy = "student")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @JsonIgnore
     private List <StudentOptionAnswerScore> Score;
 
    /* @Builder(builderMethodName = "studentBuilder")
