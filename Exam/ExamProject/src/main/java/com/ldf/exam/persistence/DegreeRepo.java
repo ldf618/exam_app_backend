@@ -22,8 +22,12 @@ public interface DegreeRepo extends CrudRepository<Degree, Integer> {
       @Query("select distinct de from Student st inner join st.classrooms cr inner join cr.course co inner join co.degree de "
             + "where st.id=:idStudent ")
     public List<Degree> findDegreesByStudentId(@Param("idStudent") Integer idStudent);
-    
+/*    
       @Query("select distinct de from Consultant con inner join con.classrooms cr inner join cr.course co inner join co.degree de "
+            + "where con.id=:idConsultant ")
+    public List<Degree> findDegreesByConsultantId(@Param("idConsultant") Integer idConsultant);    
+*/
+      @Query("select distinct de from Classroom cr inner join cr.consultant con inner join cr.course co inner join co.degree de "
             + "where con.id=:idConsultant ")
     public List<Degree> findDegreesByConsultantId(@Param("idConsultant") Integer idConsultant);    
 }

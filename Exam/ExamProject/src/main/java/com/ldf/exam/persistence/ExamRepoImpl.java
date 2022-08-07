@@ -36,8 +36,8 @@ public class ExamRepoImpl implements ExamRepoCustom {
     // see https://www.baeldung.com/spring-data-criteria-queries 5. Using JPA Specifications
     @Override
     public List<Exam> findByQuestionTypeAndCourseCriteria(Integer idCourse, ExamQuestion.QuestionType questionType1, ExamQuestion.QuestionType questionType2){
-         
-        CriteriaBuilder builder = em.getCriteriaBuilder();        
+      return null;   
+/*        CriteriaBuilder builder = em.getCriteriaBuilder();        
         CriteriaQuery<Exam> cq = builder.createQuery(Exam.class);   
         Root<Exam> root = cq.from(Exam.class);
         cq.select(root);        
@@ -54,6 +54,6 @@ public class ExamRepoImpl implements ExamRepoCustom {
 
         TypedQuery<Exam> query = em.createQuery(cq);
         List<Exam> result =  query.getResultList();
-        return result;
+        return result;*/
      }
 }

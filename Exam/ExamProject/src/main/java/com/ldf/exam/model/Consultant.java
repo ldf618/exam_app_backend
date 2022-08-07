@@ -45,7 +45,7 @@ public class Consultant extends User {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Arrays.asList(new SimpleGrantedAuthority("ROLE_Consultant"));
     }
-    
+ /*   
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany (mappedBy = "consultant")
@@ -55,7 +55,8 @@ public class Consultant extends User {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany (mappedBy = "consultant")
+    @JsonIgnore
     private List<Exam> exams;
-    
+   */ 
     
 }

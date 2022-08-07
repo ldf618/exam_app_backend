@@ -22,10 +22,17 @@ public interface ClassroomRepo
     public Object[] findClassroomByStudentIdAndCourseId
         (@Param("idStudent") Integer idStudent,
          @Param("idCourse") Integer idCourse);
-        
+     /*  
      @Query("select distinct cr.id, cr.name from Consultant con inner join con.classrooms cr inner join cr.course co "
             + "where con.id=:idStudent and co.id=:idCourse ")
     public Object[] findClassroomByConsultantIdAndCourseId
         (@Param("idStudent") Integer idStudent,
-         @Param("idCourse") Integer idCourse);        
+         @Param("idCourse") Integer idCourse);
+       */ 
+    @Query("select distinct cr.id, cr.name from Classroom cr inner join cr.consultant con inner join cr.course co "
+   + "where con.id=:idStudent and co.id=:idCourse ")
+        public Object[] findClassroomByConsultantIdAndCourseId
+                    (@Param("idStudent") Integer idStudent,
+         @Param("idCourse") Integer idCourse);
+       
 }

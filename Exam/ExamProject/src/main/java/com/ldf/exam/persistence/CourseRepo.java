@@ -23,10 +23,17 @@ public interface CourseRepo
     public List<Course> findCoursesByStudentIdAndDegreeId
         (@Param("idStudent") Integer idStudent,
          @Param("idDegree") Integer idDegree);
-        
+/*        
     @Query("select distinct co from Consultant con inner join con.classrooms cr inner join cr.course co inner join co.degree de "
             + "where con.id=:idConsultant and de.id=:idDegree ")
     public List<Course> findCoursesByConsultantIdAndDegreeId
         (@Param("idConsultant") Integer idConsultant,
          @Param("idDegree") Integer idDegree);        
+*/
+
+    @Query("select distinct co from Classroom cr inner join cr.consultant con inner join cr.course co inner join co.degree de "
+            + "where con.id=:idConsultant and de.id=:idDegree ")
+    public List<Course> findCoursesByConsultantIdAndDegreeId
+        (@Param("idConsultant") Integer idConsultant,
+         @Param("idDegree") Integer idDegree);            
 }

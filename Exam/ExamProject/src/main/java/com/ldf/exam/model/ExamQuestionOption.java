@@ -1,7 +1,10 @@
 package com.ldf.exam.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -32,16 +35,19 @@ public class ExamQuestionOption extends IdentityIntId{  /*implements Serializabl
     @ToString.Exclude //Avoid StackOverflow error
     @EqualsAndHashCode.Exclude
     @ManyToOne
+    @NotNull
+    @JsonBackReference
     private ExamQuestion examQuestion;
-
+    
     @Column
     @Size(max = 500)
     @NotNull
-    private String wording;
+    private String answer;
 
     @Column
     @NotNull
-    private boolean isRigth;
+    @JsonProperty("isTrue")
+    private boolean isTrue;
 
     @Column
     private int position;

@@ -1,5 +1,8 @@
 package com.ldf.exam.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -7,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -41,8 +45,10 @@ public class ExamQuestion extends IdentityIntId{ //implements Serializable {
     
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    //@NotNull
-    @ManyToOne
+    @NotNull
+    @ManyToOne//(cascade = CascadeType.ALL)  
+    //@JoinColumn(name = "exam_id", nullable=false, updatable = false, insertable = false)
+    @JsonBackReference
     private Exam exam;
   
     @Column
@@ -57,6 +63,7 @@ public class ExamQuestion extends IdentityIntId{ //implements Serializable {
 
     @Column
     @NotNull
+    @JsonProperty("isMultipleSelection") //for mapping true or false json values
     private boolean isMultipleSelection;
 
     @Column
@@ -65,5 +72,13 @@ public class ExamQuestion extends IdentityIntId{ //implements Serializable {
     //@ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToMany (mappedBy = "examQuestion", fetch = FetchType.EAGER , cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @JsonManagedReference
     private List <ExamQuestionOption> examQuestionOptions;
+
+    public void setExamQuestionOptions(List<ExamQuestionOption> examQuestionOptions) {
+        this.examQuestionOptions = examQuestionOptions;
+        examQuestionOptions.forEach(q->{q.setExamQuestion(this);});
+    }
+    
+    
 }

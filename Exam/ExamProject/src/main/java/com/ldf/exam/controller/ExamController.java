@@ -6,10 +6,13 @@
 package com.ldf.exam.controller;
 
 import com.ldf.exam.model.Exam;
+import com.ldf.exam.model.ExamQuestion;
 import com.ldf.exam.persistence.ExamRepo;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  */
 @RestController
-@RequestMapping(path = "/api", produces = {"application/json", "text/xml"})
+@RequestMapping(path = "/api/exam", produces = {"application/json", "text/xml"})
 @CrossOrigin(origins = "*")
 public class ExamController {
 
@@ -49,7 +52,12 @@ public class ExamController {
     
     @PostMapping(path ="exam", consumes="application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public Exam saveExam(@RequestBody Exam exam) {
-     return examRepo.save(exam);
+    public Exam saveExam(@RequestBody Exam exam/*,HttpEntity<String> httpEntity*/) {
+        //System.out.println(httpEntity.getBody());
+        System.out.println(exam);
+//        List<ExamQuestion> eq = exam.getExamQuestions();
+//        exam.setExamQuestions(new ArrayList());
+//        eq.forEach(q->{q.setExam(exam);});
+        return examRepo.save(exam);
     }
 }

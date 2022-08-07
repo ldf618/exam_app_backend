@@ -1,8 +1,12 @@
 package com.ldf.exam.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -27,6 +32,7 @@ import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "exams")
@@ -57,7 +63,7 @@ public class Exam extends IdentityIntId {
 
     @Column
     @NotNull
-    @Size(min = 2, max = 50)
+    @Size(min = 2, max = 100)
     private String name;
 
     @Column
@@ -70,7 +76,8 @@ public class Exam extends IdentityIntId {
     private ExamType type;
 
     @Column //(columnDefinition = "DATE")
-    private ZonedDateTime publicationDate;
+    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)    
+    private LocalDate publicationDate;
 
     @Column //(columnDefinition = "DATE")
     private LocalDate creationDate;
@@ -82,23 +89,32 @@ public class Exam extends IdentityIntId {
     private LocalDate deadline;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY/*, cascade = CascadeType.PERSIST*/)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    //@JsonIgnore
     private Course course;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    //@JsonIgnore
     private Consultant consultant;
 
+    
     @OrderBy("position")
-    @OneToMany(mappedBy = "exam", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "exam", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     //@ToString.Exclude
     @EqualsAndHashCode.Exclude
     @Fetch(FetchMode.SELECT) //Hibernate propietary but avoids duplication.Default FetchMode.JOIN duplicate rows 
+    @JsonManagedReference
     private List<ExamQuestion> examQuestions;
+    
+    public void setExamQuestions(List<ExamQuestion> eq){
+        examQuestions=eq;
+        eq.forEach(q->{q.setExam(this);});
+    }
 
     @PrePersist
     void createdAt() {
