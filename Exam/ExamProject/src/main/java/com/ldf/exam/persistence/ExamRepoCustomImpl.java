@@ -28,16 +28,18 @@ import org.springframework.stereotype.Repository;
  * @author Lo
  */
 @Repository
-public class ExamRepoImpl implements ExamRepoCustom {
+public class ExamRepoCustomImpl implements ExamRepoCustom {
+    
     
     @Autowired
     EntityManager em;
-    
+       
     // see https://www.baeldung.com/spring-data-criteria-queries 5. Using JPA Specifications
     @Override
     public List<Exam> findByQuestionTypeAndCourseCriteria(Integer idCourse, ExamQuestion.QuestionType questionType1, ExamQuestion.QuestionType questionType2){
       return null;   
-/*        CriteriaBuilder builder = em.getCriteriaBuilder();        
+      /*
+        CriteriaBuilder builder = em.getCriteriaBuilder();        
         CriteriaQuery<Exam> cq = builder.createQuery(Exam.class);   
         Root<Exam> root = cq.from(Exam.class);
         cq.select(root);        
@@ -56,4 +58,5 @@ public class ExamRepoImpl implements ExamRepoCustom {
         List<Exam> result =  query.getResultList();
         return result;*/
      }
+    
 }

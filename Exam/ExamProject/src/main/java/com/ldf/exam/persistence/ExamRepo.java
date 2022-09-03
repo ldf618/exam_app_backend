@@ -10,6 +10,7 @@ import com.ldf.exam.model.ExamQuestion;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -18,7 +19,7 @@ import org.springframework.data.repository.query.Param;
  *
  * @author Lo
  */
-public interface ExamRepo extends JpaRepository<Exam, Integer>, ExamRepoCustom  {
+public interface ExamRepo extends JpaRepository<Exam, Integer>, ExamRepoCustom, JpaSpecificationExecutor<Exam>  {
     
     public List<Exam> findByCourse(int idCourse);
     public List<Exam> findByPublicationDateIsNotNullAndPublicationDateBetween(LocalDate startDate, LocalDate endDate);
@@ -30,5 +31,5 @@ public interface ExamRepo extends JpaRepository<Exam, Integer>, ExamRepoCustom  
             @Param("idCourse") Integer idCourse,
             @Param("questionType1") ExamQuestion.QuestionType questionType1, 
             @Param("questionType2") ExamQuestion.QuestionType questionType2);
-        
+            
 }

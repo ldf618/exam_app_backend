@@ -2,6 +2,7 @@ package com.ldf.exam.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -51,12 +52,12 @@ public class Consultant extends User {
     @OneToMany (mappedBy = "consultant")
     @JsonIgnore
     private List<Classroom> classrooms;
-    
+ */   
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany (mappedBy = "consultant")
-    @JsonIgnore
+    @JsonManagedReference
     private List<Exam> exams;
-   */ 
+   
     
 }

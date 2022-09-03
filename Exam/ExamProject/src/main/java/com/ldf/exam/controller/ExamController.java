@@ -5,10 +5,9 @@
  */
 package com.ldf.exam.controller;
 
+import com.ldf.exam.controller.dto.SearchExamDTO;
 import com.ldf.exam.model.Exam;
-import com.ldf.exam.model.ExamQuestion;
 import com.ldf.exam.persistence.ExamRepo;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import static com.ldf.exam.persistence.ExamSpecification.*;
 
 /**
  *
@@ -36,7 +36,7 @@ public class ExamController {
 
     @Autowired
     private ExamRepo examRepo;
-
+    
     @RequestMapping("/exams")
     public List<Exam> findAll() {
         return examRepo.findAll();
@@ -60,4 +60,18 @@ public class ExamController {
 //        eq.forEach(q->{q.setExam(exam);});
         return examRepo.save(exam);
     }
+    
+    @PostMapping(path ="examSearch", consumes="application/json")
+    public List<Exam> findByParams(@RequestBody SearchExamDTO searchExamDTO/*,HttpEntity<String> httpEntity*/) {       
+        System.out.println(searchExamDTO);
+       return  examRepo.findAll(
+               createSpecification(
+                       searchExamDTO.getName(), 
+                       searchExamDTO.getType(), 
+                       searchExamDTO.getPublished(), 
+                       searchExamDTO.getStartDate(), 
+                       searchExamDTO.getEndDate())
+       );       
+    }
+    
 }

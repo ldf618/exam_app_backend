@@ -1,5 +1,6 @@
 package com.ldf.exam.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -80,6 +81,7 @@ public class Exam extends IdentityIntId {
     private LocalDate publicationDate;
 
     @Column //(columnDefinition = "DATE")
+    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)    
     private LocalDate creationDate;
 
     @Column //(columnDefinition = "DATE")
@@ -89,7 +91,7 @@ public class Exam extends IdentityIntId {
     private LocalDate deadline;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY/*, cascade = CascadeType.PERSIST*/)
+    @ManyToOne(fetch = FetchType.EAGER/*, cascade = CascadeType.PERSIST*/)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     //@JsonIgnore
@@ -99,7 +101,7 @@ public class Exam extends IdentityIntId {
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    //@JsonIgnore
+    @JsonBackReference
     private Consultant consultant;
 
     
