@@ -4,6 +4,7 @@
  */
 package com.ldf.exam.persistence;
 
+import com.ldf.exam.model.Course;
 import com.ldf.exam.model.Exam;
 import com.ldf.exam.model.Exam_;
 import java.time.LocalDate;
@@ -24,7 +25,7 @@ public final class ExamSpecification {
             return getSpecificationForNull();
         else 
             return (root, query, criteriaBuilder)
-                    -> criteriaBuilder.like(root.get(Exam_.NAME), name + "%");        
+                    -> criteriaBuilder.like(criteriaBuilder.upper(root.get(Exam_.NAME)), name.toUpperCase() + "%");        
     }
 
     public static Specification<Exam> typeEquals(Exam.ExamType type) {
@@ -65,15 +66,25 @@ public final class ExamSpecification {
                     -> criteriaBuilder.lessThanOrEqualTo(root.get(Exam_.CREATION_DATE), date);
         }
     }
+    
+    public static Specification<Exam> courseEquals(Course course) {
+        if (course == null) {
+            return getSpecificationForNull();
+        } else {
+            return (root, query, criteriaBuilder)
+                    -> criteriaBuilder.equal(root.get(Exam_.COURSE), course);
+        }
+    }
 
-    public static Specification<Exam> createSpecification(String name, Exam.ExamType type, Boolean published, LocalDate startDate, LocalDate endDate) {
+    public static Specification<Exam> createSpecification(String name, Exam.ExamType type, Boolean published, LocalDate startDate, LocalDate endDate, Course course) {
 
         Specification<Exam> specification = Specification
                 .where(nameLike(name))
                 .and(isPublished(published))
                 .and(typeEquals(type))
                 .and(createdAfter(startDate))
-                .and(createdBefore(endDate));
+                .and(createdBefore(endDate))
+                .and(courseEquals(course));
 
         return specification;
     }

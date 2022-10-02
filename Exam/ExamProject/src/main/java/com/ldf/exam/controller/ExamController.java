@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import static com.ldf.exam.persistence.ExamSpecification.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 /**
  *
@@ -61,17 +63,52 @@ public class ExamController {
         return examRepo.save(exam);
     }
     
+    @PostMapping(path ="deleteExam", consumes="application/json")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteExam(@RequestBody Exam exam/*,HttpEntity<String> httpEntity*/) {
+        System.out.println(exam);
+        examRepo.delete(exam);
+    }
+    
+    @PostMapping(path ="test", consumes="application/json", produces = "application/json")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void test(@RequestBody Exam exam/*,HttpEntity<String> httpEntity*/) {
+
+    }
+    
+    
+    @PostMapping(path ="updatePublicationDate", consumes="application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public int publicateExam(@RequestBody Exam exam) {
+        System.out.println(exam);
+        return examRepo.setExamPublicationDateById(exam.getPublicationDate(),exam.getId());
+    }
+    
     @PostMapping(path ="examSearch", consumes="application/json")
-    public List<Exam> findByParams(@RequestBody SearchExamDTO searchExamDTO/*,HttpEntity<String> httpEntity*/) {       
+    public Page<Exam> findByParams(@RequestBody SearchExamDTO searchExamDTO/*,HttpEntity<String> httpEntity*/) {       
         System.out.println(searchExamDTO);
-       return  examRepo.findAll(
+        
+        PageRequest pr;
+        
+        if (searchExamDTO.getPageNumber()==null)
+            searchExamDTO.setPageNumber(0); 
+        
+        if (searchExamDTO.getPageSize()==null)
+            pr =  PageRequest.ofSize(10);
+        else 
+            pr =  PageRequest.of(searchExamDTO.getPageNumber(), searchExamDTO.getPageSize()); 
+        
+        Page<Exam> page = examRepo.findAll(
                createSpecification(
                        searchExamDTO.getName(), 
                        searchExamDTO.getType(), 
                        searchExamDTO.getPublished(), 
                        searchExamDTO.getStartDate(), 
-                       searchExamDTO.getEndDate())
+                       searchExamDTO.getEndDate(),
+                       searchExamDTO.getCourse()),
+                       pr
        );       
+        return page;
     }
     
 }

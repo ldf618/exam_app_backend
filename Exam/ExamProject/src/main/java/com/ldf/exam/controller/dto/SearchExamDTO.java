@@ -4,6 +4,7 @@
  */
 package com.ldf.exam.controller.dto;
 
+import com.ldf.exam.model.Course;
 import com.ldf.exam.model.Exam;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
@@ -25,4 +26,7 @@ public class SearchExamDTO {
     private Boolean published; 
     private LocalDate startDate; 
     private LocalDate endDate;
+    private Integer pageNumber;
+    private Integer pageSize;
+    private Course course;
 }
