@@ -1,5 +1,7 @@
 package com.ldf.exam.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,17 +38,19 @@ public class ExamQuestionOptionAnswer extends IdentityIntId {/* implements Seria
 
     @ToString.Exclude //Avoid StackOverflow error
     @ManyToOne
+    @JsonBackReference
     private ExamQuestionAnswer examQuestionAnswer;
 
     @Column
     @Size(max = 4000)
-    @NotNull
+//    @NotNull
     private String answer;
 
     @Column
-    @NotNull
+//    @NotNull
     private boolean isSelected;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "examQuestionOptionAnswer")
     private List <StudentOptionAnswerScore> Score;
 }

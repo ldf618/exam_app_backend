@@ -71,7 +71,7 @@ public class ExamQuestion extends IdentityIntId{ //implements Serializable {
     
     //@ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany (mappedBy = "examQuestion", fetch = FetchType.EAGER , cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany (mappedBy = "examQuestion", fetch = FetchType.EAGER , cascade =CascadeType.ALL /*{CascadeType.PERSIST, CascadeType.MERGE}*/, orphanRemoval = true)
     @JsonManagedReference
     private List <ExamQuestionOption> examQuestionOptions;
 

@@ -1,5 +1,7 @@
 package com.ldf.exam.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -36,6 +38,7 @@ public class ExamQuestionAnswer extends IdentityIntId {/*implements Serializable
     @ToString.Exclude
     @NotNull
     @ManyToOne
+    @JsonBackReference
     private ExamAnswer examAnswer;
 
     //@ToString.Exclude
@@ -44,10 +47,11 @@ public class ExamQuestionAnswer extends IdentityIntId {/*implements Serializable
     private ExamQuestion examQuestion;
 
     @Column
-    @NotNull
+//    @NotNull
     @Size(max = 4000)
     private String answer;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "examQuestionAnswer", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<ExamQuestionOptionAnswer> examQuestionOptionAnswer;
 }
