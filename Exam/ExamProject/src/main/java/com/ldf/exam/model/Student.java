@@ -13,6 +13,7 @@ import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -73,4 +74,11 @@ public class Student extends User {
     public Student(int idUser, String name, String surname1, String surname2, String dni, String userName, String userPassword) {
         super(idUser, name, surname1, surname2, dni, userName, userPassword);
     }*/
+    
+    public void copyFromUser(User user) {
+        //(user.getId(), user.getFirstname(), user.getSurname1(), user.getSurname2(), user.getDni(), user.getUsername(), user.getPassword(), user.getPhoto());
+        BeanUtils.copyProperties(user, this);
+    }
+    
+    
 }

@@ -1,5 +1,6 @@
 package com.ldf.exam.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Arrays;
 import java.util.Collection;
@@ -55,16 +56,23 @@ public class User extends IdentityIntId implements UserDetails {
     @Size(min = 9, max = 9)
     private String dni;
 
-    @Column
+    @Column(unique=true)
     @NotNull
-    @Size(min = 2, max = 50)
+    @Size(min = 6, max = 20)
     private String username;
+    
+    @Column
+    private byte[] photo;
 
     @Column
     @NotNull
     @Size(min = 2, max = 200)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //jwt. prevent the password text to be included in json rsponse
-    private String password;    
+    private String password; 
+    
+    @JsonInclude()
+    @Transient
+    private String type;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) 
     @Override

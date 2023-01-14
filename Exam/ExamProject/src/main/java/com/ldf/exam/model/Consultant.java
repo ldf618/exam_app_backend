@@ -18,6 +18,7 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import org.springframework.beans.BeanUtils;
 
 //javax.persistence
 @Entity
@@ -67,5 +68,8 @@ public class Consultant extends User {
     @JsonIgnore
     private List<Exam> exams;
    
-    
+    public void copyFromUser(User user) {
+        //(user.getId(), user.getFirstname(), user.getSurname1(), user.getSurname2(), user.getDni(), user.getUsername(), user.getPassword(), user.getPhoto());
+        BeanUtils.copyProperties(user, this);
+    }
 }

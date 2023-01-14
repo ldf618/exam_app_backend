@@ -52,6 +52,6 @@ public class ExamQuestionAnswer extends IdentityIntId {/*implements Serializable
     private String answer;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "examQuestionAnswer", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "examQuestionAnswer", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ExamQuestionOptionAnswer> examQuestionOptionAnswer;
 }

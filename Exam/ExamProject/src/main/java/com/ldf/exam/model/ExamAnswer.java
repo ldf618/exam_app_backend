@@ -1,5 +1,6 @@
 package com.ldf.exam.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -48,7 +49,8 @@ public class ExamAnswer extends IdentityIntId{ //implements Serializable {
     private LocalDateTime changeDate;
    
     @NotNull
-    @ManyToOne (fetch = FetchType.LAZY)
+    @ManyToOne (fetch = FetchType.EAGER)
+    //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Student student;
     
     @NotNull

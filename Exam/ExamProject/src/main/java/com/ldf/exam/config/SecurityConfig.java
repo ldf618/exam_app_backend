@@ -76,8 +76,8 @@ public class SecurityConfig {
      */
     @Bean
     public PasswordEncoder passwordEncoder() {
-        PasswordEncoder encoder = new BCryptPasswordEncoder();
-        System.out.println(encoder.encode("????"));
+        //PasswordEncoder encoder = new BCryptPasswordEncoder();
+        //System.out.println(encoder.encode("????"));
         return new BCryptPasswordEncoder();
     }
     
@@ -113,7 +113,7 @@ public class SecurityConfig {
 
         http.csrf().disable()
             .httpBasic().disable()
-            .cors()
+            .cors()           
             .and()                
             .authorizeHttpRequests()
 //            .antMatchers(HttpMethod.OPTIONS,"/api/**").permitAll()                
@@ -130,7 +130,11 @@ public class SecurityConfig {
 
             .and()
             .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            //.and().headers().contentSecurityPolicy("frame-ancestors 'self' "+host)
+                //.and().contentSecurityPolicy("frame-src 'self' http://localhost:8080/ ")
+                           // .and().frameOptions().disable()
+                ;
 
         http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
