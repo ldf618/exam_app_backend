@@ -96,6 +96,20 @@ public class JWTUtil {
       return cookie;
     }
     
+    public ResponseCookie generateJwtCookie(String username) {
+      String jwt = generateToken(username);
+      ResponseCookie cookie = 
+              ResponseCookie
+              .from(cookieName, jwt)
+              .path("/api")
+              .maxAge(24 * 60 * 60)
+              .httpOnly(true)
+              .secure(true)
+              .sameSite("none")
+              .build();
+      return cookie;
+    }    
+    
     public ResponseCookie getCleanJwtCookie() {
       ResponseCookie cookie = ResponseCookie.from(cookieName, null).path("/api").build();
       return cookie;

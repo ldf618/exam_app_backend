@@ -1,0 +1,31 @@
+version: '2'
+
+services:
+  app:
+    image: 'docker-spring-boot-postgres:latest'
+    build:
+      context: .
+    container_name: app
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/compose-postgres
+      - SPRING_DATASOURCE_USERNAME=compose-postgres
+      - SPRING_DATASOURCE_PASSWORD=compose-postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      #- LOGGING_LEVEL_COM_LDF=TRACE
+      #- LOGGING_FILE_PATH=\logs
+      #- LOGGING_FILE_NAME=exams.log
+    ports:
+      - '8080:8080'        
+    volumes:
+      - C:\Users\ldiez\OneDrive\Documentos\tmp:/logs          
+  db:
+    image: 'postgres:13.1-alpine'
+    container_name: db
+    environment:
+      - POSTGRES_USER=compose-postgres
+      - POSTGRES_PASSWORD=compose-postgres
+    ports:
+      - '5432:5432'
+      

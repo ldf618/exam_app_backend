@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 
@@ -29,6 +30,8 @@ public class JWTFilterCookie{
     private UserRepositoryUserDetailsService userDetailsService;
     @Autowired
     private JWTUtil jwtUtil;
+ //       @Autowired
+//    private AuthenticationManager authManager;
 
     protected void doFilterInternal(HttpServletRequest request,
             HttpServletResponse response,
@@ -65,7 +68,7 @@ public class JWTFilterCookie{
                     authorities = new ArrayList(userDetails.getAuthorities());
                     authToken
                             = new UsernamePasswordAuthenticationToken(username, userDetails.getPassword(), authorities);
-//                        authManager.authenticate(authToken);
+                 //       authManager.authenticate(authToken);
                     //No autentica, probar que autentique
                 }
 

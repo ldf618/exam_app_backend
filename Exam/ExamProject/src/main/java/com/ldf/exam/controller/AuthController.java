@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -44,6 +46,8 @@ import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 //@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/auth")
 public class AuthController {
+    
+    Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
     private StudentRepo studentRepo;
@@ -58,6 +62,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerHandler(@RequestBody User user) {
+        logger.info("Registering user "+user.getUsername());
         if (user.getType().equals("Student")) {
             return registerStudent(user);
         } else {
@@ -66,12 +71,11 @@ public class AuthController {
     }
     
     @InitBinder
-    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder){
-        
+    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder){        
         // Convert multipart object to byte[]
-        binder.registerCustomEditor(byte[].class, new ByteArrayMultipartFileEditor());
-        
+        binder.registerCustomEditor(byte[].class, new ByteArrayMultipartFileEditor());        
     }
+    
     @PostMapping(value = "/register2", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity<?> registerHandler2(@ModelAttribute User user) {
         if (user.getType().equals("Student")) {
@@ -83,6 +87,7 @@ public class AuthController {
     
    @ExceptionHandler(DataIntegrityViolationException.class)
    public ResponseEntity handleDuplicateUsername(DataIntegrityViolationException e) {
+     logger.warn("DataIntegrityViolationException"+e.getLocalizedMessage());
      if (e.getMostSpecificCause().getMessage().contains("username"))//.contains("unique"))
         return ResponseEntity.status(HttpStatus.CONFLICT).body("El usuario ya existe. Pruebe otro");
      else
@@ -91,29 +96,31 @@ public class AuthController {
    
    @ExceptionHandler(MaxUploadSizeExceededException.class)
    public ResponseEntity handlePhoto(MaxUploadSizeExceededException e) {
-       System.out.println("MaxUploadSizeExceededException");
+        logger.warn("MaxUploadSizeExceededException"+e.getLocalizedMessage());
         return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body("No se ha podido registrar el usuario. La foto es demasido grande > 10MB");
    }
 
     private ResponseEntity<?> registerStudent(User user) {
-
+        logger.info("Registering a student");
         Student student = new Student();
         student.copyFromUser(user);
         student.setPassword(passwordEncoder.encode(user.getPassword()));
         student = studentRepo.save(student);
-
+        logger.info("Student registered");  
+        
         List<GrantedAuthority> authorities = (List<GrantedAuthority>) student.getAuthorities();
         ResponseCookie jwtCookie = jwtUtil.generateJwtCookie(user.getUsername(), authorities);
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString()).body(student);
     }
     
     private ResponseEntity<?> registerConsultant(User user) {
-
+        logger.info("Registering a consultant");
         Consultant consultant = new Consultant();
         consultant.copyFromUser(user);
         consultant.setPassword(passwordEncoder.encode(user.getPassword()));
         consultant = consultantRepo.save(consultant);
-
+        logger.info("Consultant registered");
+        
         List<GrantedAuthority> authorities = (List<GrantedAuthority>) consultant.getAuthorities();
         ResponseCookie jwtCookie = jwtUtil.generateJwtCookie(user.getUsername(), authorities);
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString()).body(consultant);
@@ -123,6 +130,7 @@ public class AuthController {
 
     @PostMapping("/loginJson")
     public Map<String, Object> loginHandlerJson(@RequestBody LoginCredentials body, HttpServletResponse response) {
+        logger.info("Authenticating user "+body.getUsername());
         try {
             UsernamePasswordAuthenticationToken authInputToken
                     = new UsernamePasswordAuthenticationToken(body.getUsername(), body.getPassword());
@@ -135,6 +143,7 @@ public class AuthController {
             return Collections.singletonMap("jwt-token", token);
         } catch (AuthenticationException authExc) {
             //throw new RuntimeException("Invalid Login Credentials");
+            logger.warn("Invalid Login Credentials for user "+body.getUsername());
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED, "Invalid Login Credentials");
             return Collections.singletonMap("error", "Invalid Login Credentials");
         }
@@ -144,7 +153,7 @@ public class AuthController {
     @PostMapping("/loginCookie")
     public ResponseEntity<?> loginHandlerCookie(@RequestBody LoginCredentials body, HttpServletResponse response) {
         try {
-            System.out.println("loginCookie");
+            logger.info("Authenticating user "+body.getUsername());
             UsernamePasswordAuthenticationToken authInputToken
                     = new UsernamePasswordAuthenticationToken(body.getUsername(), body.getPassword());
 
@@ -159,7 +168,7 @@ public class AuthController {
                     .body(true);//"Login succeeded!!");
 
         } catch (AuthenticationException authExc) {
-            //throw new RuntimeException("Invalid Login Credentials");
+            logger.warn("Invalid Login Credentials for user "+body.getUsername());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);//"Invalid Login Credentials");
         }
     }

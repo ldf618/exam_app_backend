@@ -37,7 +37,9 @@ public class SecurityConfig {
     @Autowired
     private UserRepositoryUserDetailsService uds;
     @Value("${frontend_host}")
-    private String host;
+    private String frontEndHost;
+    @Value("${zuulserver_host}")
+    private String zuulServerHost;
 
     /*
     @Bean
@@ -80,11 +82,11 @@ public class SecurityConfig {
         //System.out.println(encoder.encode("????"));
         return new BCryptPasswordEncoder();
     }
-    
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(host));
+        configuration.setAllowedOrigins(Arrays.asList(frontEndHost,zuulServerHost));
         configuration.setAllowCredentials(Boolean.TRUE);
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         //configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
@@ -112,28 +114,27 @@ public class SecurityConfig {
          */
 
         http.csrf().disable()
-            .httpBasic().disable()
-            .cors()           
-            .and()                
-            .authorizeHttpRequests()
-//            .antMatchers(HttpMethod.OPTIONS,"/api/**").permitAll()                
-            .antMatchers("/api/auth/**").permitAll()
-            .antMatchers("/api/**").hasAnyRole("Student", "Consultant")
-            .and()
-            .userDetailsService(uds)                
-            .exceptionHandling()
-            .authenticationEntryPoint(
-                    (request, response, authException)
-                    //-> response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")
-                    -> response.setStatus(HttpServletResponse.SC_UNAUTHORIZED)
-            )
-
-            .and()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            //.and().headers().contentSecurityPolicy("frame-ancestors 'self' "+host)
+                .httpBasic().disable()
+                .cors()
+                .and()
+                .authorizeHttpRequests()
+                //            .antMatchers(HttpMethod.OPTIONS,"/api/**").permitAll()                
+                .antMatchers("/test/**").permitAll()
+                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/api/**").hasAnyRole("Student", "Consultant")
+                .and()
+                .userDetailsService(uds)
+                .exceptionHandling()
+                .authenticationEntryPoint(
+                        (request, response, authException)
+                        //-> response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")
+                        -> response.setStatus(HttpServletResponse.SC_UNAUTHORIZED)
+                )
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) //.and().headers().contentSecurityPolicy("frame-ancestors 'self' "+host)
                 //.and().contentSecurityPolicy("frame-src 'self' http://localhost:8080/ ")
-                           // .and().frameOptions().disable()
+                // .and().frameOptions().disable()
                 ;
 
         http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
