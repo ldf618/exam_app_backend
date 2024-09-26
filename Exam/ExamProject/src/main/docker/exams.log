@@ -1,0 +1,28 @@
+2023-01-29 13:09:37.746  INFO 18956 --- [main] com.ldf.exam.ExamApplication             : Starting ExamApplication v0.0.1-SNAPSHOT using Java 11.0.18 on LAPTOP-99ECVK8O with PID 18956 (C:\Users\ldiez\OneDrive\Documentos\NetBeansProjects\exam_app_backend\Exam\ExamProject\src\main\docker\exam-0.0.1-SNAPSHOT.jar started by ldiez in C:\Users\ldiez\OneDrive\Documentos\NetBeansProjects\exam_app_backend\Exam\ExamProject\src\main\docker)
+2023-01-29 13:09:37.762 DEBUG 18956 --- [main] com.ldf.exam.ExamApplication             : Running with Spring Boot v2.7.1, Spring v5.3.21
+2023-01-29 13:09:37.762  INFO 18956 --- [main] com.ldf.exam.ExamApplication             : No active profile set, falling back to 1 default profile: "default"
+2023-01-29 13:09:39.283  INFO 18956 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-01-29 13:09:39.519  INFO 18956 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 201 ms. Found 13 JPA repository interfaces.
+2023-01-29 13:09:41.221  INFO 18956 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-01-29 13:09:41.238  INFO 18956 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-01-29 13:09:41.239  INFO 18956 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.64]
+2023-01-29 13:09:41.366  INFO 18956 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-01-29 13:09:41.366  INFO 18956 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3475 ms
+2023-01-29 13:09:41.668  INFO 18956 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-01-29 13:09:41.768  INFO 18956 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.6.9.Final
+2023-01-29 13:09:42.092  INFO 18956 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2023-01-29 13:09:42.325  INFO 18956 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-01-29 13:09:42.747  INFO 18956 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-01-29 13:09:42.802  INFO 18956 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+2023-01-29 13:09:44.967  INFO 18956 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-01-29 13:09:45.100  INFO 18956 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-01-29 13:09:45.663 DEBUG 18956 --- [main] com.ldf.exam.security.JWTFilter          : Filter 'JWTFilter' configured for use
+2023-01-29 13:09:46.577  INFO 18956 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@799f916e, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@576b7c74, org.springframework.security.web.context.SecurityContextPersistenceFilter@604d23fa, org.springframework.security.web.header.HeaderWriterFilter@22d7fd41, org.springframework.web.filter.CorsFilter@21de60a7, org.springframework.security.web.authentication.logout.LogoutFilter@42507640, com.ldf.exam.security.JWTFilter@5d0b0cb9, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@331ff3ac, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2e5e6fc4, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@73894c5a, org.springframework.security.web.session.SessionManagementFilter@7741771e, org.springframework.security.web.access.ExceptionTranslationFilter@5a7df831, org.springframework.security.web.access.intercept.AuthorizationFilter@7fda2001]
+2023-01-29 13:09:46.665  WARN 18956 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-01-29 13:09:47.559  INFO 18956 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-01-29 13:09:47.575  INFO 18956 --- [main] com.ldf.exam.ExamApplication             : Started ExamApplication in 10.866 seconds (JVM running for 11.68)
+2023-01-29 13:11:19.064  INFO 18956 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-01-29 13:11:19.066  INFO 18956 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-01-29 13:11:19.068  INFO 18956 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2023-01-29 13:11:19.289  INFO 18956 --- [http-nio-8080-exec-2] com.ldf.exam.controller.AuthController   : Authenticating user AliciaVerdu
+2023-01-29 13:13:40.522  INFO 18956 --- [http-nio-8080-exec-2] com.ldf.exam.controller.AuthController   : Authenticating user AliciaVerdu
